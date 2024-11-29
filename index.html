@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Tarifas Ideales</title>
+    <style>
+        body {
+            font-family: "Arimo", sans-serif;
+            background-color: #E5EBF4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            color: #22C0DC;
+            text-align: center;
+        }
+        .form-group {
+            margin: 15px 0;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        input, select {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .results, .suggestions {
+            margin-top: 20px;
+            padding: 15px;
+            background: #F9F9F9;
+            border-left: 4px solid #01BD39;
+        }
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .cta-button {
+            padding: 10px 20px;
+            background-color: #01BD39;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .cta-button:hover {
+            background-color: #019E2D;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Calculadora de Tarifas Ideales</h1>
+        <div class="form-group">
+            <label for="hours-available">Horas disponibles por semana</label>
+            <input type="number" id="hours-available" placeholder="Ej: 20">
+        </div>
+        <div class="form-group">
+            <label for="income-goal">Meta de ingresos mensual (USD)</label>
+            <input type="number" id="income-goal" placeholder="Ej: 2000">
+        </div>
+        <div class="form-group">
+            <label for="resources">Recursos disponibles</label>
+            <select id="resources">
+                <option value="sin-subcontratacion">Sin necesidad de subcontratar</option>
+                <option value="subcontratacion-parcial">Subcontratación parcial</option>
+                <option value="subcontratacion-total">Subcontratación total</option>
+            </select>
+        </div>
+        <div class="button-container">
+            <button onclick="calculateRates()">Calcular</button>
+        </div>
+        <div id="results" class="results" style="display: none;">
+            <h2>Resultados</h2>
+            <p id="rate"></p>
+        </div>
+        <div id="suggestions" class="suggestions" style="display: none;">
+            <h2>Sugerencias</h2>
+            <ul id="advice-list"></ul>
+        </div>
+        <div class="button-container">
+            <a href="https://klicana.work/Ecpzgd" class="cta-button">
+                SÍ! ¡INSCRIBIRME EN “ASISTENTE VIRTUAL EN 14 DÍAS”!
+            </a>
+        </div>
+    </div>
+
+    <script>
+        function calculateRates() {
+            const hours = parseFloat(document.getElementById("hours-available").value);
+            const income = parseFloat(document.getElementById("income-goal").value);
+            const resources = document.getElementById("resources").value;
+
+            if (!hours || !income) {
+                alert("Por favor, completa todos los campos.");
+                return;
+            }
+
+            let baseRate = income / (hours * 4); // Tarifa base semanal
+
+            // Ajuste según recursos
+            if (resources === "subcontratacion-parcial") {
+                baseRate *= 1.2;
+            } else if (resources === "subcontratacion-total") {
+                baseRate *= 1.5;
+            }
+
+            document.getElementById("rate").innerText = `Tu tarifa ideal por hora es: $${baseRate.toFixed(2)} USD.`;
+            document.getElementById("results").style.display = "block";
+
+            const adviceList = document.getElementById("advice-list");
+            adviceList.innerHTML = ""; // Limpiar sugerencias previas
+
+            // Sugerencias personalizadas
+            const suggestions = [];
+            if (resources === "subcontratacion-total") {
+                suggestions.push("Considera negociar paquetes en lugar de tarifas por hora para justificar los costos.");
+            }
+            suggestions.push("Asegúrate de que tu propuesta de valor destaque tus habilidades únicas.");
+            suggestions.push("Evalúa regularmente tus tarifas para garantizar que sigan siendo competitivas.");
+            suggestions.forEach(suggestion => {
+                const li = document.createElement("li");
+                li.textContent = suggestion;
+                adviceList.appendChild(li);
+            });
+
+            document.getElementById("suggestions").style.display = "block";
+        }
+    </script>
+</body>
+</html>
